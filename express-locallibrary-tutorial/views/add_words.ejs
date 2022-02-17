@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.html')%>
+<%- include('partials/header.html')%>
+<body>
+
+<div class="container">
+    <h1>Добавить слова в тест</h1>
+    <form action="postWord" method="POST">
+        <input name="test_id" type="text" class="form-control" value="<%=test_id%>" aria-describedby="emailHelp" readonly>
+        <div class="mb-3">
+            <label class="form-label">Слово</label>
+            <input name="word" type="text" class="form-control" id="input_title" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">Введите слово на английском языке</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Перевод</label>
+            <input name="translated" type="text" class="form-control" id="input_desc">
+        </div>
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label">Название картинки</label>-->
+<!--            <input name="img" type="text" class="form-control" id="input_picture">-->
+<!--        </div>-->
+        <button type="submit" class="btn btn-primary" style="text-align: center;">Сохранить</button>
+    </form>
+</div>
+
+<div>
+    <a href="/">К списку тестов</a>
+</div>
+
+</body>
+
+<%- include("partials/footer.html") %>
+</html>

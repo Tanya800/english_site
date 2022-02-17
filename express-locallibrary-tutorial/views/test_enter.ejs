@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.html') %>
+<%- include('partials/header.html') %>
+<body>
+<a href="/test/addWord/<%= test_id %>">Добавить слова в тест</a>
+<div class="container">
+
+    <div>
+        <h4 align="center">Тренировочные слова в тесте: </h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Слово</th>
+                <th scope="col">Перевод</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <%
+            let i = 0;
+            if((words.length) > 0){
+            words.forEach(el=>{ %>
+                <tr>
+                    <td><%= ++i %></td>
+                    <td><%= el.word %></td>
+                    <td><%= el.translate %></td>
+                </tr>
+            <% }); } %>
+            </tbody>
+        </table>
+    </div>
+<div class="row" style="text-align: center;padding: 0 10% 20% 10%">
+    <a href="/test/testProcess/<%= test_id %>" id="starting_btn" type="button" class="btn btn-success" >
+        Начать тестирование
+    </a>
+</div>
+
+</div>
+</body>
+<script>
+    console.log('43 test');
+    var words_arr =<%-JSON.stringify(words)%>;
+    console.log(words_arr);
+
+</script>
+<%- include('partials/footer.html') %>
+</html>

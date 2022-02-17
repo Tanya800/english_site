@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.html') %>
+<%- include('partials/header.html') %>
+<body>
+
+<div class="container">
+
+    <div class="container-card">
+        <h4 align="center">Запиши перевод слова</h4>
+        <%- include('partials/card.html') %>
+    </div>
+
+    <div class="container-results" style="display: none;align-content: center;text-align: center">
+        <h2>Тест</h2>
+    </div>
+
+</div>
+<script>
+
+    function mixarr(arr){
+        return arr.map(i=>[Math.random(), i]).sort().map(i=>i[1])
+    }
+
+    function rowWordAnswer(i,word,answer) {
+        let style ='good';
+        if (word !== answer) style='wrong';
+        return `<p>${i+1} ${word} - <span class='${style}'>${answer}</span></p>`
+    }
+
+    function repeatTest(){
+        window.location.reload();
+    }
+
+
+    let test ={
+        words:[],
+        answers:[],
+        current_index:0,
+        test_completed:0,
+        init:function (words) {
+            console.log(words)
+
+            this.words = mixarr(words);
+            current_index=0;
+            this.updateTitle();
+        },
+        saveResult:function (result) {
+            this.answers.push(result.toLowerCase());
+        },
+        changeStep:function (result) {
+            this.saveResult(result);
+            if(this.current_index >= (this.words.length-1)) {this.stop();return;}
+
+            this.current_index+=1;
+            this.updateTitle();
+        },
+        updateTitle:function () {
+
+            $('#card_img')[0].src = "/images/test/" + this.words[this.current_index].img;
+            $('#title_word_test')[0].textContent = this.words[this.current_index].word;
+        },
+        stop:function () {
+            this.test_completed = 1;
+
+            let block_res= $('.container-results')[0];
+            block_res.style.display='block';
+            $('.container-card')[0].style.display='none';
+
+            block_res.insertAdjacentHTML('beforeend',`<h3>Ваш результат: ${this.checkResult()} из ${this.words.length}</h3>`);
+
+            let listAnswers = '';
+            this.words.forEach((el,i)=>{
+                listAnswers += rowWordAnswer(i,el.translate,this.answers[i]);
+            });
+            block_res.insertAdjacentHTML('beforeend',listAnswers);
+            block_res.insertAdjacentHTML('beforeend',`<p><a href='/' style="padding-right: 2%"><i class="fas fa-reply"></i> Вернуться к тестам </a><a onclick="repeatTest()" href="">Пройти тест еще раз<i class="fas fa-redo-alt"></i></a></p>`);
+        },
+        checkResult:function () {
+            let sum = 0 ;
+            this.words.forEach((el,i)=>{
+                if(el.translate === this.answers[i]) sum+=1;
+            });
+            return sum;
+        }
+
+    }
+
+    var words_arr =<%-JSON.stringify(words)%>;
+    test.init(words_arr);
+
+    $('#check_button').on('click',e=>{
+        answer = $('#answer_translated')[0].value;
+        $('#answer_translated')[0].value = '';
+        test.changeStep(answer);
+    });
+
+    $('#help_button').on('click',e=>{
+        let input_translated = $('#answer_translated')[0];
+        if(input_translated.value === test.words[test.current_index].translate) return;
+
+        if(input_translated.value === ''){
+            input_translated.value = test.words[test.current_index].translate[0]
+        }else {
+
+            current_value = input_translated.value;
+            let i=0,addnext=0;
+            for (let character of test.words[test.current_index].translate) {
+
+                console.log('current_character: ' +character);
+                console.log('current_value[i]: ' +current_value[i]);
+                // if(){
+                //     console.log('add next');
+                //     addnext=0;
+                //     input_translated.value += character;
+                //     break;
+                // }
+                if(current_value[i] || addnext===1){
+
+                    if(current_value[i] !== character){
+                        console.log('current_value[i] !== character');
+                        input_translated.value= current_value.slice(0,i);
+                        input_translated.value += character;
+                        break;
+                    }else{
+                        console.log('current_value[i] == character');
+                        addnext=1;
+                    }
+                }else{
+                    console.log('current_value[i] not exist');
+                    input_translated.value += character;
+                    break;
+                }
+                i+=1;
+            }
+
+                // if(current_value[i]){
+                //     if(current_value[i] !== e){
+                //         input_translated.value[i] = e;
+                //         return;
+                //     }
+                // }else{
+                //     input_translated.value += e;
+                //     return;
+                // }
+
+            };
+            // input_translated.value += test.words[test.current_index][0]
+
+    });
+
+
+</script>
+</body>
+<%- include('partials/footer.html') %>
+</html>
+<style>
+    .good{
+        color: green;
+    }
+    .wrong{
+        color: red;
+        font-weight: bold;
+    }
+</style>

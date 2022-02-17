@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head.html')%>
+<%- include('partials/header.html')%>
+<body>
+
+
+<div class="container">
+    <h1>Создание нового теста</h1>
+    <form action="postTest" method="POST">
+        <div class="mb-3">
+            <label for="input_title" class="form-label">Название теста</label>
+            <input name="title" type="text" class="form-control" id="input_title" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">Введите название теста</div>
+        </div>
+        <div class="mb-3">
+            <label for="input_desc" class="form-label">Описание</label>
+            <input name="description" type="text" class="form-control" id="input_desc">
+        </div>
+        <div class="mb-3">
+            <label for="input_picture" class="form-label">Картинка</label>
+            <input name="picture" type="text" class="form-control" id="input_picture">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+
+<div>
+    <a href="/">К списку тестов</a>
+</div>
+
+</body>
+
+<%- include("partials/footer.html") %>
+</html>
